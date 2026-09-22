@@ -51,8 +51,8 @@ export interface AssessmentAttemptRecord {
   assessment_slug: string
   score: number
   total: number
-  answers: string
-  created_at: string
+  answers: Record<string, string>
+  created_at: Date
 }
 
 export interface AssessmentResult {

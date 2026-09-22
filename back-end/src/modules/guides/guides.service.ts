@@ -20,8 +20,8 @@ const toSummary = (guide: Guide, readSlugs: Set<string>): GuideSummary => ({
 })
 
 export const guidesService = {
-  list(userId?: string): GuideSummary[] {
-    const readSlugs = new Set(userId ? guidesRepository.listReadSlugs(userId) : [])
+  async list(userId?: string): Promise<GuideSummary[]> {
+    const readSlugs = new Set(userId ? await guidesRepository.listReadSlugs(userId) : [])
     return guides.map((guide) => toSummary(guide, readSlugs))
   },
 
@@ -29,13 +29,14 @@ export const guidesService = {
     return findOrFail(slug)
   },
 
-  markAsRead(userId: string, slug: string) {
+  async markAsRead(userId: string, slug: string) {
     findOrFail(slug)
-    guidesRepository.markAsRead(userId, slug)
+    await guidesRepository.markAsRead(userId, slug)
   },
 
-  countRead(userId: string) {
-    return guidesRepository.listReadSlugs(userId).length
+  async countRead(userId: string) {
+    const slugs = await guidesRepository.listReadSlugs(userId)
+    return slugs.length
   },
 
   total() {

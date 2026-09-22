@@ -9,11 +9,11 @@ interface RequestOptions {
   body?: unknown
 }
 
-const buildHeaders = (hasBody: boolean) => {
+const buildHeaders = (isJsonBody: boolean) => {
   const headers = new Headers()
   const token = authStorage.getToken()
 
-  if (hasBody) headers.set("Content-Type", "application/json")
+  if (isJsonBody) headers.set("Content-Type", "application/json")
   if (token) headers.set("Authorization", `Bearer ${token}`)
 
   return headers
@@ -23,10 +23,12 @@ export const httpClient = async <TResponse>(
   path: string,
   { method = "GET", body }: RequestOptions = {}
 ): Promise<TResponse> => {
+  const isFormData = body instanceof FormData
+
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
-    headers: buildHeaders(body !== undefined),
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: buildHeaders(body !== undefined && !isFormData),
+    body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   })
 
   if (response.status === 204) return undefined as TResponse

@@ -7,15 +7,15 @@ import type { ProgressOverview, ProgressStep } from "./progress.types.js"
 const ATS_TARGET = 80
 
 export const progressService = {
-  overview(userId: string): ProgressOverview {
-    const resumes = resumesService.list(userId)
-    const attempts = assessmentsRepository.listByUser(userId)
+  async overview(userId: string): Promise<ProgressOverview> {
+    const resumes = await resumesService.list(userId)
+    const attempts = await assessmentsRepository.listByUser(userId)
     const assessmentsTotal = assessmentsService.list().length
     const guidesTotal = guidesService.total()
 
     const bestAtsScore = resumes.reduce((best, resume) => Math.max(best, resume.ats.score), 0)
     const assessmentsCompleted = new Set(attempts.map((attempt) => attempt.assessmentSlug)).size
-    const guidesRead = guidesService.countRead(userId)
+    const guidesRead = await guidesService.countRead(userId)
 
     const steps: ProgressStep[] = [
       {

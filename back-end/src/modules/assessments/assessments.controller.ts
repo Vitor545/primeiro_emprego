@@ -13,15 +13,16 @@ export const assessmentsController = {
     res.json(assessmentsService.getBySlug(getParam(req, "slug")))
   }),
 
-  submit: asyncHandler((req, res) => {
-    res
-      .status(201)
-      .json(
-        assessmentsService.submit(getUserId(req), getParam(req, "slug"), req.body as SubmitAttemptInput)
-      )
+  submit: asyncHandler(async (req, res) => {
+    const result = await assessmentsService.submit(
+      getUserId(req),
+      getParam(req, "slug"),
+      req.body as SubmitAttemptInput
+    )
+    res.status(201).json(result)
   }),
 
-  history: asyncHandler((req, res) => {
-    res.json(assessmentsService.history(getUserId(req), getParam(req, "slug")))
+  history: asyncHandler(async (req, res) => {
+    res.json(await assessmentsService.history(getUserId(req), getParam(req, "slug")))
   }),
 }

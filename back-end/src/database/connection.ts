@@ -1,15 +1,14 @@
-import { mkdirSync } from "node:fs"
-import { dirname } from "node:path"
-import { DatabaseSync } from "node:sqlite"
+import pg from "pg"
 
 import { env } from "../config/env.js"
-import { applyMigrations } from "./migrations.js"
 
-mkdirSync(dirname(env.databaseFile), { recursive: true })
+const { Pool, types } = pg
 
-export const database = new DatabaseSync(env.databaseFile)
+types.setTypeParser(types.builtins.INT8, (value) => Number(value))
 
-database.exec("PRAGMA journal_mode = WAL;")
-database.exec("PRAGMA foreign_keys = ON;")
+export const pool = new Pool({ connectionString: env.databaseUrl })
 
-applyMigrations(database)
+export const query = async <TRow extends pg.QueryResultRow>(text: string, values: unknown[] = []) =>
+  pool.query<TRow>(text, values)
+
+export const closeDatabase = () => pool.end()

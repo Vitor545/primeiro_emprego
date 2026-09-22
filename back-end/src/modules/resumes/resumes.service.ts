@@ -10,26 +10,27 @@ const withAnalysis = (resume: Resume) => ({
   ats: atsAnalysisService.analyze(resume.content),
 })
 
-const findOrFail = (id: string, userId: string) => {
-  const resume = resumesRepository.findByIdAndUser(id, userId)
+const findOrFail = async (id: string, userId: string) => {
+  const resume = await resumesRepository.findByIdAndUser(id, userId)
   if (!resume) throw HttpError.notFound("Curriculo nao encontrado")
 
   return resume
 }
 
 export const resumesService = {
-  list(userId: string) {
-    return resumesRepository.listByUser(userId).map(withAnalysis)
+  async list(userId: string) {
+    const resumes = await resumesRepository.listByUser(userId)
+    return resumes.map(withAnalysis)
   },
 
-  getById(id: string, userId: string) {
-    return withAnalysis(findOrFail(id, userId))
+  async getById(id: string, userId: string) {
+    return withAnalysis(await findOrFail(id, userId))
   },
 
-  create(userId: string, input: CreateResumeInput) {
+  async create(userId: string, input: CreateResumeInput) {
     const now = new Date().toISOString()
 
-    const resume = resumesRepository.create({
+    const resume = await resumesRepository.create({
       id: createId(),
       userId,
       title: input.title,
@@ -41,10 +42,10 @@ export const resumesService = {
     return withAnalysis(resume)
   },
 
-  update(id: string, userId: string, input: UpdateResumeInput) {
-    const current = findOrFail(id, userId)
+  async update(id: string, userId: string, input: UpdateResumeInput) {
+    const current = await findOrFail(id, userId)
 
-    const resume = resumesRepository.update({
+    const resume = await resumesRepository.update({
       ...current,
       title: input.title,
       content: input.content,
@@ -54,8 +55,8 @@ export const resumesService = {
     return withAnalysis(resume)
   },
 
-  remove(id: string, userId: string) {
-    findOrFail(id, userId)
-    resumesRepository.remove(id, userId)
+  async remove(id: string, userId: string) {
+    await findOrFail(id, userId)
+    await resumesRepository.remove(id, userId)
   },
 }

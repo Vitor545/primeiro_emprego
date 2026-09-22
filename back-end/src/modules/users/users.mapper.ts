@@ -5,7 +5,7 @@ export const toUser = (record: UserRecord): User => ({
   name: record.name,
   email: record.email,
   passwordHash: record.password_hash,
-  createdAt: record.created_at,
+  createdAt: record.created_at.toISOString(),
 })
 
 export const toPublicUser = (user: User): PublicUser => ({

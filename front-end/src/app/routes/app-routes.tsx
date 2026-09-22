@@ -8,11 +8,13 @@ import {
   RESUME_EDITOR_ROUTE,
 } from "@/constants/app-routes"
 import { AssessmentDetailPage } from "@/pages/assessment-detail/assessment-detail-page"
+import { AttachmentsPage } from "@/pages/attachments/attachments-page"
 import { AssessmentsPage } from "@/pages/assessments/assessments-page"
 import { DashboardPage } from "@/pages/dashboard/dashboard-page"
 import { GuideDetailPage } from "@/pages/guide-detail/guide-detail-page"
 import { GuidesPage } from "@/pages/guides/guides-page"
 import { HomePage } from "@/pages/home/home-page"
+import { InterviewCoachPage } from "@/pages/interview-coach/interview-coach-page"
 import { NotFoundPage } from "@/pages/not-found/not-found-page"
 import { ResumeEditorPage } from "@/pages/resume-editor/resume-editor-page"
 import { ResumesPage } from "@/pages/resumes/resumes-page"
@@ -40,6 +42,8 @@ export function AppRoutes() {
           <Route path={ASSESSMENT_ROUTE} element={<AssessmentDetailPage />} />
           <Route path={APP_ROUTES.guides} element={<GuidesPage />} />
           <Route path={GUIDE_ROUTE} element={<GuideDetailPage />} />
+          <Route path={APP_ROUTES.interviewCoach} element={<InterviewCoachPage />} />
+          <Route path={APP_ROUTES.attachments} element={<AttachmentsPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

@@ -4,6 +4,7 @@ import { ErrorState } from "@/components/feedback/error-state"
 import { LoadingState } from "@/components/feedback/loading-state"
 import { PageHeader } from "@/components/layout/page-header"
 import { Button } from "@/components/ui/button"
+import { AiAssistant } from "./components/ai-assistant"
 import { AtsChecklist } from "./components/ats-checklist"
 import { ResumeForm } from "./components/resume-form"
 import { ResumePreview } from "./components/resume-preview"
@@ -12,6 +13,7 @@ import { useResumeEditor } from "./hooks/use-resume-editor"
 export function ResumeEditorPage() {
   const {
     form,
+    ai,
     education,
     experiences,
     isNew,
@@ -63,6 +65,7 @@ export function ResumeEditorPage() {
 
         <div className="space-y-6">
           {ats && <AtsChecklist analysis={ats} />}
+          <AiAssistant {...ai} />
           <ResumePreview content={preview} />
         </div>
       </div>

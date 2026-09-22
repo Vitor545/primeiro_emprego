@@ -10,7 +10,9 @@ const NAV_ITEMS = [
   { to: APP_ROUTES.dashboard, label: "Painel" },
   { to: APP_ROUTES.resumes, label: "Curriculos" },
   { to: APP_ROUTES.assessments, label: "Testes" },
+  { to: APP_ROUTES.interviewCoach, label: "Treino" },
   { to: APP_ROUTES.guides, label: "Guias" },
+  { to: APP_ROUTES.attachments, label: "Documentos" },
 ]
 
 export function AppHeader() {

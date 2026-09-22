@@ -16,6 +16,7 @@ import {
   toResumePayload,
 } from "../lib/resume-form-mapper"
 import { resumeFormSchema, type ResumeFormValues } from "../schemas/resume-form-schema"
+import { useResumeAi } from "./use-resume-ai"
 
 export const useResumeEditor = () => {
   const { id = NEW_RESUME_ID } = useParams()
@@ -55,8 +56,11 @@ export const useResumeEditor = () => {
     onError: (error) => toast.error(getApiErrorMessage(error)),
   })
 
+  const ai = useResumeAi({ resumeId: resume?.id ?? null, form })
+
   return {
     form,
+    ai,
     education,
     experiences,
     isNew,

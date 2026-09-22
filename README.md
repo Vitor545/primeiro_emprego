@@ -6,22 +6,28 @@ compatibilidade ATS, simulacoes comportamentais, guias de carreira e painel de p
 ## Estrutura
 
 ```
-back-end/    API em Node + Express + TypeScript (SQLite nativo do Node)
+back-end/    API em Node + Express + TypeScript + PostgreSQL (IA e armazenamento S3)
 front-end/   SPA em React 19 + Vite + TypeScript + Tailwind + TanStack Query
+docs/        Documentacao academica (itens 4 a 7) e backlog de melhorias
 ```
 
 ## Como rodar
 
-Pre-requisito: Node 22 ou superior (a API usa o modulo nativo `node:sqlite`).
+Pre-requisitos: Node 22 ou superior e um servidor PostgreSQL acessivel.
+
+Recursos opcionais: sem `OPENAI_API_KEY` os quatro recursos de IA ficam indisponiveis; sem as
+variaveis `S3_*` o envio de documentos fica indisponivel. Em ambos os casos a plataforma continua
+funcionando e as telas avisam a indisponibilidade.
 
 ### API
 
 ```bash
 cd back-end
 npm install
-cp .env.example .env
-npm run seed   # opcional: cria o usuario demo@primeiroemprego.dev / demo1234
-npm run dev    # http://localhost:3333/api
+cp .env.example .env   # preencha DATABASE_URL (o banco precisa existir)
+npm run migrate        # cria as tabelas
+npm run seed           # opcional: usuario demo@primeiroemprego.dev / demo1234
+npm run dev            # http://localhost:3333/api
 ```
 
 ### Front-end
@@ -43,6 +49,9 @@ npm run dev    # http://localhost:5173
 | Simulacoes | Tres testes comportamentais com pontuacao, diagnostico e historico de tentativas |
 | Guias | Conteudos de curriculo, entrevista e soft skills, com marcacao de leitura |
 | Painel | Trilha de etapas, percentual de conclusao e metricas consolidadas |
+| Assistente de IA | Gera resumo profissional, analisa aderencia a uma vaga e escreve carta de apresentacao |
+| Treino de entrevista | Devolutiva de resposta aberta pela tecnica STAR, com nota e reescrita |
+| Documentos | Upload, download por URL assinada e exclusao de anexos em armazenamento S3 |
 
 ## API
 
@@ -64,6 +73,16 @@ npm run dev    # http://localhost:5173
 | GET | `/api/guides/:slug` | nao | Conteudo do guia |
 | POST | `/api/guides/:slug/read` | sim | Marca guia como lido |
 | GET | `/api/progress` | sim | Painel de progresso consolidado |
+| GET | `/api/ai/status` | nao | Informa se a IA esta configurada |
+| POST | `/api/ai/resume-summary` | sim | Gera o resumo profissional do curriculo |
+| POST | `/api/ai/job-match` | sim | Analisa a aderencia entre curriculo e vaga |
+| POST | `/api/ai/cover-letter` | sim | Gera carta de apresentacao |
+| POST | `/api/ai/interview-feedback` | sim | Avalia resposta de entrevista pela tecnica STAR |
+| GET | `/api/ai/history` | sim | Ultimas interacoes de IA do usuario |
+| GET | `/api/attachments/status` | nao | Informa se o armazenamento esta configurado |
+| GET | `/api/attachments` | sim | Lista documentos com URL de download assinada |
+| POST | `/api/attachments` | sim | Envia documento (multipart, ate 5 MB) |
+| DELETE | `/api/attachments/:id` | sim | Remove documento do armazenamento e do banco |
 
 ## Convencoes de arquitetura
 
@@ -81,6 +100,8 @@ npm run dev    # http://localhost:5173
 
 - Um modulo por dominio em `src/modules/<dominio>`, com camadas separadas:
   `routes` -> `controller` -> `service` -> `repository`.
+- Integracoes externas ficam isoladas em um `provider` por modulo (`ai.provider.ts`,
+  `storage.provider.ts`): trocar de provedor de IA ou de armazenamento altera apenas esse arquivo.
 - `controller` so traduz HTTP; `service` concentra a regra de negocio; `repository` isola o SQL.
 - Validacao de entrada por schema Zod no middleware `validateRequest`.
 - Codigo compartilhado (erros, middlewares, utilitarios) em `src/shared`.

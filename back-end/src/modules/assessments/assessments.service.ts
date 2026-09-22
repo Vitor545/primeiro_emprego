@@ -40,7 +40,11 @@ export const assessmentsService = {
     return findOrFail(slug)
   },
 
-  submit(userId: string, slug: string, { answers }: SubmitAttemptInput): AssessmentResult {
+  async submit(
+    userId: string,
+    slug: string,
+    { answers }: SubmitAttemptInput
+  ): Promise<AssessmentResult> {
     const assessment = findOrFail(slug)
 
     const unanswered = assessment.questions.filter((question) => !answers[question.id])
@@ -61,7 +65,7 @@ export const assessmentsService = {
     const percentage = total === 0 ? 0 : Math.round((score / total) * 100)
     const range = resolveRange(assessment, percentage)
 
-    const attempt = assessmentsRepository.createAttempt({
+    const attempt = await assessmentsRepository.createAttempt({
       id: createId(),
       userId,
       assessmentSlug: slug,

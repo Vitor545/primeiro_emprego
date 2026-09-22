@@ -3,7 +3,7 @@ export interface UserRecord {
   name: string
   email: string
   password_hash: string
-  created_at: string
+  created_at: Date
 }
 
 export interface User {

@@ -1,10 +1,10 @@
-import type { Resume, ResumeContent, ResumeRecord } from "./resumes.types.js"
+import type { Resume, ResumeRecord } from "./resumes.types.js"
 
 export const toResume = (record: ResumeRecord): Resume => ({
   id: record.id,
   userId: record.user_id,
   title: record.title,
-  content: JSON.parse(record.content) as ResumeContent,
-  createdAt: record.created_at,
-  updatedAt: record.updated_at,
+  content: record.content,
+  createdAt: record.created_at.toISOString(),
+  updatedAt: record.updated_at.toISOString(),
 })

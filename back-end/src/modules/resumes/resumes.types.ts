@@ -40,9 +40,9 @@ export interface ResumeRecord {
   id: string
   user_id: string
   title: string
-  content: string
-  created_at: string
-  updated_at: string
+  content: ResumeContent
+  created_at: Date
+  updated_at: Date
 }
 
 export interface AtsCheck {

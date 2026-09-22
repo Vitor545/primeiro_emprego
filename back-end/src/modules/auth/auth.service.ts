@@ -8,11 +8,11 @@ import type { SignInInput, SignUpInput } from "./auth.schemas.js"
 
 export const authService = {
   async signUp({ name, email, password }: SignUpInput) {
-    if (usersRepository.findByEmail(email)) {
+    if (await usersRepository.findByEmail(email)) {
       throw HttpError.conflict("Ja existe uma conta com este e-mail")
     }
 
-    const user = usersRepository.create({
+    const user = await usersRepository.create({
       id: createId(),
       name,
       email,
@@ -27,7 +27,7 @@ export const authService = {
   },
 
   async signIn({ email, password }: SignInInput) {
-    const user = usersRepository.findByEmail(email)
+    const user = await usersRepository.findByEmail(email)
 
     if (!user || !(await verifyPassword(password, user.passwordHash))) {
       throw HttpError.unauthorized("E-mail ou senha incorretos")

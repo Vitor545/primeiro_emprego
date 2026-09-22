@@ -9,6 +9,8 @@ export const APP_ROUTES = {
   assessment: (slug: string) => `/testes/${slug}`,
   guides: "/guias",
   guide: (slug: string) => `/guias/${slug}`,
+  interviewCoach: "/treino-de-entrevista",
+  attachments: "/documentos",
 } as const
 
 export const RESUME_EDITOR_ROUTE = "/curriculos/:id"

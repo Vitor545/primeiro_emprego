@@ -1,16 +1,5 @@
-import { database } from "../../database/connection.js"
+import { query } from "../../database/connection.js"
 import type { AssessmentAttempt, AssessmentAttemptRecord } from "./assessments.types.js"
-
-const insertStatement = database.prepare(
-  `INSERT INTO assessment_attempts (id, user_id, assessment_slug, score, total, answers, created_at)
-   VALUES (?, ?, ?, ?, ?, ?, ?)`
-)
-const listByUserStatement = database.prepare(
-  `SELECT * FROM assessment_attempts WHERE user_id = ? ORDER BY created_at DESC`
-)
-const listByAssessmentStatement = database.prepare(
-  `SELECT * FROM assessment_attempts WHERE user_id = ? AND assessment_slug = ? ORDER BY created_at DESC`
-)
 
 const toAttempt = (record: AssessmentAttemptRecord): AssessmentAttempt => ({
   id: record.id,
@@ -18,31 +7,42 @@ const toAttempt = (record: AssessmentAttemptRecord): AssessmentAttempt => ({
   assessmentSlug: record.assessment_slug,
   score: record.score,
   total: record.total,
-  answers: JSON.parse(record.answers) as Record<string, string>,
-  createdAt: record.created_at,
+  answers: record.answers,
+  createdAt: record.created_at.toISOString(),
 })
 
 export const assessmentsRepository = {
-  createAttempt(attempt: AssessmentAttempt): AssessmentAttempt {
-    insertStatement.run(
-      attempt.id,
-      attempt.userId,
-      attempt.assessmentSlug,
-      attempt.score,
-      attempt.total,
-      JSON.stringify(attempt.answers),
-      attempt.createdAt
+  async createAttempt(attempt: AssessmentAttempt): Promise<AssessmentAttempt> {
+    await query(
+      `INSERT INTO assessment_attempts (id, user_id, assessment_slug, score, total, answers, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        attempt.id,
+        attempt.userId,
+        attempt.assessmentSlug,
+        attempt.score,
+        attempt.total,
+        JSON.stringify(attempt.answers),
+        attempt.createdAt,
+      ]
     )
     return attempt
   },
 
-  listByUser(userId: string): AssessmentAttempt[] {
-    return (listByUserStatement.all(userId) as unknown as AssessmentAttemptRecord[]).map(toAttempt)
+  async listByUser(userId: string): Promise<AssessmentAttempt[]> {
+    const { rows } = await query<AssessmentAttemptRecord>(
+      `SELECT * FROM assessment_attempts WHERE user_id = $1 ORDER BY created_at DESC`,
+      [userId]
+    )
+    return rows.map(toAttempt)
   },
 
-  listByAssessment(userId: string, assessmentSlug: string): AssessmentAttempt[] {
-    return (listByAssessmentStatement.all(userId, assessmentSlug) as unknown as AssessmentAttemptRecord[]).map(
-      toAttempt
+  async listByAssessment(userId: string, assessmentSlug: string): Promise<AssessmentAttempt[]> {
+    const { rows } = await query<AssessmentAttemptRecord>(
+      `SELECT * FROM assessment_attempts WHERE user_id = $1 AND assessment_slug = $2
+       ORDER BY created_at DESC`,
+      [userId, assessmentSlug]
     )
+    return rows.map(toAttempt)
   },
 }

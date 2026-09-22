@@ -3,8 +3,8 @@ import { toPublicUser } from "./users.mapper.js"
 import { usersRepository } from "./users.repository.js"
 
 export const usersService = {
-  getProfile(userId: string) {
-    const user = usersRepository.findById(userId)
+  async getProfile(userId: string) {
+    const user = await usersRepository.findById(userId)
     if (!user) throw HttpError.notFound("Usuario nao encontrado")
 
     return toPublicUser(user)
