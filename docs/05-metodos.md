@@ -60,45 +60,12 @@ no item 6.
 
 **Figura 1 — Como o sistema é organizado**
 
-```
-        NAVEGADOR
-┌──────────────────────────┐
-│ SITE (React)             │
-│ Telas → Lógica →         │
-│ Chamadas ao servidor     │
-└───────────┬──────────────┘
-            │ pedidos pela API
-┌───────────▼──────────────┐
-│ SERVIDOR (Node.js)       │
-│ Rotas → Controlador →    │
-│ Serviço → Repositório    │
-└───────────┬──────────────┘
-            │
-   ┌────────┼─────────┬──────────────┐
-   ▼        ▼         ▼              ▼
-PostgreSQL  IA    Servidor de    (6 tabelas)
-(dados)  (4 usos)   arquivos
-```
+![Arquitetura do sistema: navegador com o site em React, servidor em Node.js dividido em rotas, controlador, serviço e repositório, e abaixo o banco PostgreSQL, a inteligência artificial e o servidor de arquivos](figuras/figura-1-arquitetura.png)
 
 Fonte: elaborado pelos autores (2026).
 
 **Figura 2 — Caminho do usuário no site**
 
-```
-Cadastro/Login → PAINEL (trilha de 5 etapas)
-                    │
-   ┌────────────┬───┴────┬────────────┬────────────┐
-   ▼            ▼        ▼            ▼            ▼
-CURRÍCULOS  SIMULAÇÕES  TREINO DE   GUIAS     DOCUMENTOS
-  │            │        ENTREVISTA    │            │
-  ├ formulário │            │         │            │
-  ├ nota ATS   │            │         │            │
-  ├ IA         ▼            ▼         ▼            ▼
-  └ PDF     resultado   devolutiva  leitura     arquivos
-   │            │            │         │            │
-   └────────────┴────────────┴─────────┴────────────┘
-                    ▼
-            Painel atualizado
-```
+![Caminho do usuário: do cadastro ao painel e deste para currículos, simulações, treino de entrevista, guias e documentos, com todas as ações voltando a atualizar o painel](figuras/figura-2-fluxo-do-usuario.png)
 
 Fonte: elaborado pelos autores (2026).
