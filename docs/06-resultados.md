@@ -78,18 +78,25 @@ módulos. A validação funcional desses dois recursos depende da substituição
 **7. Todas as funcionalidades idealizadas foram entregues?**
 Sim, as quatro funcionalidades previstas no item 2.2 foram implementadas, e outras quatro foram
 acrescentadas durante o desenvolvimento (assistente de currículo por inteligência artificial, análise
-de aderência a vagas, treino de entrevista com devolutiva e repositório de documentos). Há duas
-diferenças de implementação a registrar: a exportação em PDF foi realizada pelo mecanismo de
-impressão do navegador, e não por biblioteca externa; e a plataforma é executada em ambiente local,
-não tendo sido publicada em servidor de hospedagem.
+de aderência a vagas, treino de entrevista com devolutiva e repositório de documentos). A única
+diferença de implementação a registrar é a exportação em PDF, realizada pelo mecanismo de impressão
+do navegador e não por biblioteca externa.
 
-**8. O que deve constar na tabela de custo real?**
-Os mesmos recursos do item 4, com os valores efetivamente incorridos. Como os softwares e bibliotecas
-são gratuitos e os servidores de banco de dados e de arquivos pertencem à equipe, a diferença entre
-orçado e real concentra-se nas horas de desenvolvimento e no consumo da interface de programação de
-inteligência artificial.
+**8. A plataforma foi publicada?**
+Sim. O produto foi empacotado em contêineres e publicado em um cluster Kubernetes hospedado no
+servidor virtual privado da equipe, ficando acessível em `https://emprego.vitorsouzadasilva.tech`,
+com certificado TLS emitido automaticamente pela autoridade certificadora Let's Encrypt. A interface
+e a API respondem sob o mesmo endereço — a raiz serve a interface e o caminho `/api`, o servidor de
+aplicação —, e o banco de dados é acessado pela rede interna do cluster.
 
-**9. Quais imagens devem ser inseridas?**
+**9. O que deve constar na tabela de custo real?**
+Os mesmos recursos do item 4, com os valores efetivamente incorridos. O custo real de infraestrutura
+foi zero: o VPS e o domínio já pertenciam a um integrante, e neles rodam também o PostgreSQL e o
+SeaweedFS. Se contratados hoje, custariam R$ 43,99 mensais e R$ 10,00, respectivamente. Restam como
+custo apenas as 63 horas de desenvolvimento (3 h/dia × 7 dias × 3 integrantes) e o consumo da API de
+inteligência artificial, inferior a R$ 1,00.
+
+**10. Quais imagens devem ser inseridas?**
 Capturas de tela do produto em funcionamento, listadas na Parte 3 deste documento.
 
 ---
@@ -167,6 +174,15 @@ comportamental retornou 10 pontos de 10 possíveis, equivalentes a 100% e à cla
 avançado"; e a consulta ao painel retornou 20% de conclusão da trilha, valor compatível com a única
 etapa cumprida até aquele momento.
 
+Quanto à disponibilização, o produto foi empacotado em contêineres e publicado em um cluster
+Kubernetes hospedado no servidor virtual privado da equipe, ficando acessível ao público em
+`https://emprego.vitorsouzadasilva.tech`, com certificado de segurança emitido automaticamente pela
+autoridade certificadora Let's Encrypt. A interface e o servidor de aplicação respondem sob o mesmo
+endereço — a raiz entrega a interface e o caminho `/api`, a interface de programação —, enquanto o
+banco de dados é acessado exclusivamente pela rede interna do cluster, sem exposição adicional. A
+verificação do ambiente publicado registrou resposta 200 na rota de saúde, autenticação bem-sucedida
+e consulta ao painel de progresso com os dados esperados.
+
 Registra-se que os dois recursos dependentes de serviços externos — inteligência artificial e
 armazenamento de documentos — foram implementados e tiveram seu comportamento de falha verificado,
 porém não puderam ser validados de ponta a ponta no ambiente de testes: as credenciais disponíveis
@@ -190,7 +206,7 @@ apresentado no Quadro 3.
 | — | Análise de aderência entre currículo e descrição de vaga, com nota e palavras-chave ausentes | Acrescentado; pendente de credencial válida |
 | — | Treino de entrevista com devolutiva pela técnica STAR | Acrescentado; pendente de credencial válida |
 | — | Repositório de documentos do candidato em armazenamento de objetos, com download por endereço assinado | Acrescentado; pendente de credencial válida |
-| Publicação da plataforma para acesso externo | Execução em ambiente local, com banco de dados e armazenamento em servidores remotos | Fora do escopo do protótipo |
+| Publicação da plataforma para acesso externo | Publicada em cluster Kubernetes no servidor da equipe, em `https://emprego.vitorsouzadasilva.tech`, com certificado TLS automático | Entregue além do previsto |
 
 Fonte: elaborado pelos autores (2026).
 
@@ -203,20 +219,24 @@ O custo real do produto é apresentado no Quadro 4, no mesmo formato adotado no 
 | Equipamento | Notebooks dos integrantes | 3 | R$ `[confirmar]` | R$ `[confirmar]` |
 | Equipamento | Conexão de internet | 3 | R$ `[confirmar]` | R$ `[confirmar]` |
 | Software e bibliotecas | Node.js, TypeScript, Vite, React, Tailwind CSS, TanStack Query, React Hook Form, Zod, Express, node-postgres, AWS SDK, Git, Visual Studio Code | — | R$ 0,00 | R$ 0,00 |
-| Serviços | Servidor PostgreSQL e servidor de arquivos S3 (infraestrutura da equipe) | 2 | R$ 0,00 | R$ 0,00 |
-| Serviços | Interface de programação de inteligência artificial (por uso) | `[confirmar]` chamadas | R$ `[confirmar]` | R$ `[confirmar]` |
-| Serviços | Hospedagem e domínio | — | R$ 0,00 | R$ 0,00 |
-| Mão de obra | Desenvolvimento full stack | `[confirmar]` h | R$ `[confirmar]` | R$ `[confirmar]` |
+| Infraestrutura | VPS que hospeda a aplicação, o PostgreSQL e o SeaweedFS | 1 | R$ 43,99/mês | R$ 0,00 (já pertencia a um integrante) |
+| Infraestrutura | Domínio na internet | 1 | R$ 10,00 | R$ 0,00 (já registrado) |
+| Serviços | API de inteligência artificial `gpt-4o-mini` (por token) | ~R$ 0,002 por chamada | inferior a R$ 1,00 | R$ `[confirmar no painel]` |
+| Mão de obra | Desenvolvimento full stack (3 h/dia × 7 dias × 3 integrantes) | 63 h | R$ `[confirmar]`/h | R$ `[confirmar]` |
 | **Total** | | | **R$ `[confirmar]`** | **R$ `[confirmar]`** |
 
 Fonte: elaborado pelos autores (2026).
 
-Não houve custo real com licenças de software, hospedagem ou domínio, uma vez que todas as
-ferramentas empregadas são gratuitas ou de código aberto e os servidores de banco de dados e de
-arquivos pertencem à infraestrutura da própria equipe. O único item de custo variável é o consumo da
-interface de programação de inteligência artificial, cobrado por volume de processamento. A diferença
-entre o custo orçado e o custo real restringe-se, portanto, a esse consumo e às horas de
-desenvolvimento efetivamente dedicadas ao projeto.
+Não houve custo real com licenças de software, hospedagem ou domínio. Todas as ferramentas empregadas
+são gratuitas ou de código aberto, e o servidor virtual privado e o domínio utilizados já pertenciam
+a um dos integrantes antes do início do projeto, sendo o banco de dados PostgreSQL e o servidor de
+arquivos SeaweedFS executados nesse mesmo servidor. Caso fosse necessário contratá-los, o custo seria
+de R$ 43,99 mensais pelo servidor e R$ 10,00 pelo domínio. O único item de custo variável é o consumo
+da interface de programação de inteligência artificial, cobrado por token processado, estimado em
+aproximadamente R$ 0,002 por requisição e inferior a R$ 1,00 no período. A mão de obra corresponde a
+63 horas, resultantes de 3 horas diárias durante 7 dias para cada um dos três integrantes. A
+diferença entre o custo orçado e o custo real restringe-se, portanto, à infraestrutura que não
+precisou ser contratada.
 
 ---
 
@@ -246,5 +266,5 @@ Legenda padrão: *Figura X — [descrição da tela]. Fonte: elaborado pelos aut
 
 - [ ] Substituir as credenciais da IA e do armazenamento e repetir os testes das Figuras 8, 12 e 13.
 - [ ] Capturar e inserir as Figuras 3 a 14.
-- [ ] Preencher o custo real (horas efetivas, equipamentos e consumo de IA) no Quadro 4.
+- [ ] Preencher o valor-hora e o valor dos equipamentos no Quadro 4 (horas já fechadas em 63 h).
 - [ ] Conferir se os valores do Quadro 4 são coerentes com os do item 4.

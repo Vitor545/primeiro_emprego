@@ -15,9 +15,9 @@ quatro recursos apoiados por inteligência artificial e armazenamento de documen
 **2. O produto funciona conforme idealizado?**
 Sim, nas quatro funcionalidades previstas. Duas diferenças de implementação devem ser registradas: a
 exportação do currículo em PDF é realizada pelo mecanismo de impressão do navegador, e não por
-biblioteca externa de geração de arquivos; e a aplicação é executada em ambiente local, sem
-publicação em servidor de hospedagem, embora o banco de dados e o armazenamento de arquivos já
-operem em servidores remotos.
+biblioteca externa de geração de arquivos; e a plataforma, inicialmente prevista para execução local,
+acabou publicada em cluster Kubernetes, ficando acessível em `https://emprego.vitorsouzadasilva.tech`
+com certificado de segurança automático.
 
 **3. O que foi acrescentado além do previsto?**
 Quatro recursos apoiados por inteligência artificial — geração do resumo profissional, análise de
@@ -49,20 +49,21 @@ as telas exibem aviso ao usuário. O gerador de currículo, as simulações, os 
 progresso permanecem plenamente operantes.
 
 **6. O custo final aumentou em relação ao orçado?**
-Não houve aumento de custo com licenças, hospedagem ou domínio: todos os recursos são gratuitos ou de
-código aberto e os servidores de banco de dados e de arquivos pertencem à equipe. O único custo
-variável é o consumo da interface de programação de inteligência artificial, que deve ser confrontado
-pela equipe com o previsto no item 4, junto com as horas de desenvolvimento.
+Não. Não houve desembolso com licenças, hospedagem ou domínio: os recursos são gratuitos ou de código
+aberto, e o servidor virtual privado e o domínio já pertenciam a um integrante antes do projeto — se
+contratados hoje, custariam R$ 43,99 mensais e R$ 10,00, respectivamente. O único custo variável é o
+consumo da interface de programação de inteligência artificial, com o modelo `gpt-4o-mini`, estimado
+em cerca de R$ 0,002 por requisição e inferior a R$ 1,00 no período. A mão de obra corresponde a 63
+horas, resultantes de 3 horas diárias durante 7 dias para cada um dos três integrantes.
 
 **7. Quais limitações o produto apresenta?**
 O conteúdo das simulações e dos guias é fixo, definido no código, não havendo área administrativa
-para cadastro de novos conteúdos; a aplicação roda em ambiente local; os recursos de inteligência
-artificial e de documentos dependem de credenciais válidas, ainda não disponíveis no ambiente de
-testes; não há limite de uso das chamadas de inteligência artificial por usuário; e o projeto não
+para cadastro de novos conteúdos; os recursos de inteligência artificial e de documentos dependem de
+credenciais válidas, ainda não disponíveis no ambiente de testes; não há limite de uso das chamadas de inteligência artificial por usuário; e o projeto não
 possui suíte de testes automatizados.
 
 **8. O que se sugere para trabalhos futuros?**
-Validação das credenciais e publicação da plataforma em servidor; controle de cota de uso da
+Validação das credenciais dos serviços externos; controle de cota de uso da
 inteligência artificial por usuário; suíte de testes automatizados para as regras de análise de
 currículo e de pontuação das simulações; importação de currículo em PDF já existente, com
 preenchimento automático do formulário; histórico de evolução das notas ao longo do tempo; geração
@@ -109,9 +110,10 @@ currículo em PDF, realizada pelo mecanismo de impressão do próprio navegador,
 específica, e não por biblioteca externa de geração de arquivos. A decisão decorreu de uma restrição
 técnica do próprio problema tratado: bibliotecas dessa natureza tendem a converter o texto em imagem,
 o que impediria a leitura do documento pelos sistemas de triagem automática, justamente a barreira que
-o produto busca reduzir. A segunda refere-se ao ambiente de execução: a interface e o servidor de
-aplicação operam localmente, ainda que o banco de dados e o armazenamento de arquivos estejam em
-servidores remotos.
+o produto busca reduzir. A segunda diferença é favorável ao previsto: além do protótipo local, a
+plataforma foi empacotada em contêineres e publicada em um cluster Kubernetes hospedado no servidor
+virtual privado da equipe, tornando-se acessível publicamente com certificado de segurança emitido de
+forma automática.
 
 Entre as dificuldades técnicas enfrentadas, destacam-se a definição da ordem de inicialização do
 banco de dados, que exigiu deslocar a criação do esquema para o módulo de conexão; a manutenção da
@@ -124,18 +126,21 @@ explícito dessas falhas, de modo que o sistema informe a causa e permaneça ope
 módulos.
 
 Quanto ao custo, não houve dispêndio com licenças de software, hospedagem ou domínio, pois todas as
-ferramentas utilizadas são gratuitas ou de código aberto e os servidores de banco de dados e de
-arquivos pertencem à infraestrutura da equipe. O único custo variável do produto é o consumo da
-interface de programação de inteligência artificial, cobrado por volume de processamento, conforme
-demonstrado no Quadro 4.
+ferramentas utilizadas são gratuitas ou de código aberto e o servidor virtual privado que hospeda a
+aplicação, o banco de dados e o armazenamento de arquivos já pertencia a um dos integrantes antes do
+início do trabalho, assim como o domínio empregado; a contratação desses recursos custaria, nos
+valores atuais, R$ 43,99 mensais e R$ 10,00, respectivamente. O único custo variável do produto é o
+consumo da interface de programação de inteligência artificial, cobrado por token processado e
+estimado em aproximadamente R$ 0,002 por requisição, conforme demonstrado no Quadro 4. A mão de obra
+totalizou 63 horas, correspondentes a 3 horas diárias durante 7 dias para cada um dos três
+integrantes.
 
 O produto apresenta, ainda, limitações a serem consideradas: o conteúdo das simulações e dos guias é
 definido no código-fonte, não havendo área administrativa para inclusão de novos materiais; os
 recursos apoiados por inteligência artificial e o repositório de documentos dependem de credenciais
 válidas, não disponíveis no ambiente de testes; não há limite de uso das chamadas de inteligência
 artificial por usuário; e o projeto não possui suíte de testes automatizados. Como contribuição para
-trabalhos futuros, sugere-se a publicação da plataforma em servidor, a implementação de controle de
-cota de uso, a criação de testes automatizados para as regras de análise de currículo e de pontuação
+trabalhos futuros, sugere-se a implementação de controle de cota de uso, a criação de testes automatizados para as regras de análise de currículo e de pontuação
 das simulações, a importação de currículos em PDF já existentes com preenchimento automático do
 formulário, o registro histórico da evolução das notas, a geração de questões de simulação a partir da
 vaga informada pelo usuário e a simulação de entrevistas por áudio.

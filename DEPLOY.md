@@ -213,6 +213,46 @@ Os dados sobrevivem: ficam no Postgres do namespace `banco` e no SeaweedFS, fora
 
 ---
 
+## Seguranca
+
+O repositorio e publico. Regras que valem sempre:
+
+- **Nenhuma credencial no repositorio.** Os `.env` estao no `.gitignore` e os `.env.example` trazem
+  apenas campos vazios — nunca preencha um `.env.example` com valor real, nem mesmo de exemplo:
+  alguem pode acabar subindo esse valor para producao.
+- **Segredos so vivem no Secret do cluster.** Gere cada um com valor aleatorio proprio:
+
+```powershell
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+- **Rotacionar o `JWT_SECRET`** (invalida todas as sessoes ativas):
+
+```powershell
+$tmp = Join-Path $env:TEMP "jwt.json"
+$bytes = New-Object byte[] 48
+[System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+$novo = ($bytes | ForEach-Object { $_.ToString('x2') }) -join ''
+@{ stringData = @{ JWT_SECRET = $novo } } | ConvertTo-Json | Set-Content $tmp -Encoding utf8
+kubectl -n primeiro-emprego patch secret api-secrets --patch-file $tmp
+Remove-Item $tmp -Force
+kubectl -n primeiro-emprego rollout restart deploy/api
+```
+
+Use `--patch-file`: passar o JSON direto em `--patch` quebra no PowerShell por causa das aspas.
+
+### Pendencias de infraestrutura conhecidas
+
+Nao sao causadas pelo repositorio ser publico, mas ficam mais faceis de encontrar por causa dele:
+
+| Risco | Situacao | Mitigacao sugerida |
+| --- | --- | --- |
+| Registry aceita push anonimo | `docker push` funciona sem `docker login`; qualquer um pode sobrescrever uma tag existente | Proteger o ingress do registry com autenticacao basica (`nginx.ingress.kubernetes.io/auth-type`) |
+| Postgres exposto na internet | NodePort `30032` alcancavel de fora; so a senha protege | Restringir por firewall ao IP dos integrantes, ou trocar o Service para ClusterIP e acessar por `kubectl port-forward` |
+| Uso de IA sem cota | Qualquer conta cadastrada pode disparar chamadas ilimitadas a API paga | Limite diario por usuario usando a tabela `ai_interactions` |
+
+---
+
 ## Checklist de release
 
 - [ ] `npm run typecheck` e `npm run lint` passando nos dois projetos
