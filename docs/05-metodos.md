@@ -1,88 +1,88 @@
 # 5 MÉTODOS
 
-A construção do produto foi organizada em seis etapas encadeadas: definição do escopo, definição da
-arquitetura, implementação do servidor de aplicação, implementação da interface, integração dos
-serviços externos e verificação com posterior publicação.
+O produto foi construído em seis etapas, nesta ordem: definição do que seria feito, definição da
+estrutura do sistema, construção do servidor, construção das telas, ligação com os serviços externos
+e, por fim, testes e publicação na internet.
 
-Na primeira etapa, os objetivos do produto foram desdobrados em quatro funcionalidades verificáveis —
-geração de currículo com avaliação de compatibilidade com sistemas de triagem, simulações
-comportamentais, guias de carreira e painel de progresso —, lista que passou a operar como critério
-de pronto. Na segunda etapa, definiu-se a arquitetura: o repositório foi dividido em duas partes
-independentes, uma responsável pelas regras de negócio e pelos dados e outra pela apresentação,
-comunicando-se exclusivamente por uma interface de programação sobre o protocolo HTTP, de modo que
-cada parte possa ser alterada sem afetar a outra. A organização geral é apresentada na Figura 1.
+Na primeira etapa, os objetivos do item 2.2 viraram quatro funcionalidades: gerar currículo com nota
+de compatibilidade, oferecer simulações de entrevista, publicar guias de carreira e mostrar o
+progresso do usuário. Essa lista serviu de referência para saber quando o produto estaria pronto. Na
+segunda etapa, definiu-se a estrutura: o projeto foi dividido em duas partes independentes, uma
+cuidando das regras e dos dados (o servidor) e outra cuidando das telas (o site). As duas conversam
+apenas por uma API, que é o canal por onde o site pede as informações ao servidor. A divisão permite
+mexer em uma parte sem quebrar a outra. A Figura 1 mostra essa organização.
 
-Na terceira etapa, implementou-se o servidor de aplicação em Node.js com a linguagem TypeScript,
-dividido em módulos por domínio. Cada módulo foi estruturado em quatro camadas de responsabilidade
-única: rotas, controlador, serviço e repositório. Essa divisão foi adotada para que a regra de
-negócio possa ser verificada sem depender do servidor e para que o acesso a dados fique isolado — o
-que, na prática, permitiu migrar de um banco local para o sistema gerenciador PostgreSQL alterando
-apenas a camada de repositório. Os dados são guardados em seis tabelas e as senhas nunca são
-armazenadas em texto, mas sob a forma de derivação criptográfica, com o acesso às rotas restritas
-controlado por token assinado.
+Na terceira etapa, o servidor foi escrito em Node.js com a linguagem TypeScript e dividido por
+assunto: login, usuários, currículos, simulações, guias, progresso, inteligência artificial e
+documentos. Dentro de cada assunto, o código foi separado em quatro partes, cada uma com uma tarefa
+só: as rotas dizem quais endereços existem, o controlador recebe o pedido, o serviço aplica a regra e
+o repositório conversa com o banco de dados. Essa separação permite testar as regras sem ligar o
+servidor inteiro e deixa o banco isolado — foi graças a ela que a equipe conseguiu trocar um banco
+local pelo PostgreSQL mexendo só na última parte. Os dados ficam em seis tabelas. As senhas nunca são
+guardadas como texto: passam por criptografia antes de ir para o banco. Depois do login, o usuário
+recebe um código de acesso que precisa ser enviado em cada pedido às telas protegidas.
 
-Ainda nessa etapa foram implementadas as regras próprias do produto. A análise de compatibilidade
-avalia sete critérios objetivos do currículo e devolve um percentual acompanhado da orientação
-correspondente a cada item não atendido. A exportação em PDF utiliza o mecanismo de impressão do
-próprio navegador, com folha de estilos que imprime somente o documento: a alternativa de gerar o
-arquivo por biblioteca externa converteria o texto em imagem e impediria a leitura pelos sistemas de
-triagem, justamente a barreira que o produto busca reduzir. As simulações atribuem pontuação a cada
-alternativa, calculam o percentual sobre o máximo possível, classificam o nível de preparo e
-registram a tentativa. O painel de progresso não possui dados próprios: agrega os demais módulos em
-uma trilha de cinco etapas.
+Ainda nessa etapa foram feitas as regras próprias do produto. A nota de compatibilidade confere sete
+pontos do currículo (contato, cargo, resumo, formação, palavras-chave, idiomas e perfil on-line) e
+devolve uma porcentagem junto com a explicação do que falta corrigir. A exportação em PDF usa a
+impressão do próprio navegador, com um estilo que imprime só o documento. A equipe evitou usar um
+programa externo para gerar o PDF porque esses programas costumam transformar o texto em imagem, e aí
+os sistemas de triagem das empresas não conseguem ler o currículo — justamente o problema que o site
+quer resolver. Nas simulações, cada alternativa vale uma pontuação; o servidor soma os pontos,
+calcula a porcentagem, classifica o nível de preparo e guarda a tentativa. O painel de progresso não
+tem dados próprios: ele junta as informações dos outros módulos em uma trilha de cinco etapas.
 
-Na quarta etapa, implementou-se a interface em React com TypeScript. Adotou-se uma regra explícita de
-escopo — recursos usados por mais de uma tela ficam em pastas globais, e o que pertence a uma única
-tela reside na própria página — e estabeleceu-se que os componentes contêm apenas a renderização,
-enquanto estado, chamadas à interface de programação e conversões de dados ficam concentrados em
-funções próprias de cada tela. O objetivo é a manutenibilidade: a responsabilidade de cada arquivo é
-previsível e a alteração de uma tela não produz efeitos sobre as demais. A navegação do usuário é
-apresentada na Figura 2.
+Na quarta etapa, as telas foram feitas em React com TypeScript. A equipe adotou uma regra simples de
+organização: o que várias telas usam fica em pastas gerais, e o que é de uma tela só fica na pasta
+dessa tela. Além disso, o arquivo da tela contém apenas o que aparece na página; tudo o que é cálculo,
+chamada ao servidor ou conversão de dados fica em arquivos separados. Assim fica fácil saber onde
+mexer, e alterar uma tela não afeta as outras. A Figura 2 mostra o caminho do usuário pelo site.
 
-Na quinta etapa, integraram-se dois serviços externos. O primeiro é um provedor de modelos de
-linguagem, responsável pela geração do resumo profissional, pela análise de aderência entre o
-currículo e uma vaga informada, pela elaboração de carta de apresentação e pela devolutiva de
-resposta de entrevista. Os comandos enviados ao modelo proíbem expressamente a criação de
-experiências não informadas pelo candidato, de modo que a ferramenta organize o discurso sem produzir
-informação falsa, e as respostas são exigidas em formato estruturado e validadas antes de chegarem à
-tela. O segundo é um servidor de arquivos, que guarda os documentos do candidato mantendo em banco
-apenas os metadados e entregando o download por endereço temporário. Ambas as integrações foram
-construídas de modo que sua ausência não interrompa a aplicação: sem as credenciais, as telas
-correspondentes avisam a indisponibilidade e os demais módulos seguem operantes.
+Na quinta etapa, dois serviços externos foram ligados ao sistema. O primeiro é a inteligência
+artificial, responsável por escrever o resumo do currículo, comparar o currículo com uma vaga, gerar
+a carta de apresentação e avaliar respostas de entrevista. As instruções enviadas à inteligência
+artificial proíbem inventar experiências que o candidato não informou, para que a ferramenta apenas
+organize o que ele já tem, sem criar informação falsa. As respostas precisam vir em um formato fixo e
+são conferidas antes de aparecer na tela. O segundo serviço guarda os documentos do candidato: o
+arquivo vai para um servidor de arquivos, o banco guarda só o nome e o tamanho, e o download acontece
+por um link temporário, que expira em quinze minutos. Os dois serviços foram ligados de um jeito que
+não derruba o site: se as senhas de acesso não estiverem configuradas, essas telas avisam que o
+recurso está indisponível e o resto continua funcionando.
 
-Na sexta etapa, o sistema foi verificado por checagem de tipos, análise estática de código, geração
-do pacote de produção e execução das rotas com dados reais, cobrindo cadastro, autenticação, criação
-de currículo, envio de simulação e consulta ao painel. Concluída a verificação, a aplicação foi
-empacotada em contêineres e publicada em um cluster Kubernetes, com certificado de segurança emitido
-automaticamente. Os resultados obtidos são apresentados no item 6.
+Na sexta etapa, o sistema foi testado de quatro formas: conferência automática de erros de
+programação, análise do padrão do código, geração do pacote final do site e testes dos endereços do
+servidor com dados reais, passando por cadastro, login, criação de currículo, envio de simulação e
+consulta ao painel. Depois dos testes, o site e o servidor foram empacotados em contêineres e
+publicados na internet, com certificado de segurança gerado automaticamente. Os resultados aparecem
+no item 6.
 
 ---
 
-**Figura 1 — Arquitetura em camadas da plataforma**
+**Figura 1 — Como o sistema é organizado**
 
 ```
         NAVEGADOR
 ┌──────────────────────────┐
-│ FRONT-END (React)        │
-│ Páginas → Hooks →        │
-│ Serviços                 │
+│ SITE (React)             │
+│ Telas → Lógica →         │
+│ Chamadas ao servidor     │
 └───────────┬──────────────┘
-            │ HTTP/JSON + token
+            │ pedidos pela API
 ┌───────────▼──────────────┐
-│ BACK-END (Node/Express)  │
+│ SERVIDOR (Node.js)       │
 │ Rotas → Controlador →    │
 │ Serviço → Repositório    │
 └───────────┬──────────────┘
             │
    ┌────────┼─────────┬──────────────┐
    ▼        ▼         ▼              ▼
-PostgreSQL  IA    Armazenamento   (6 tabelas)
-(dados)  (4 recursos) de arquivos
+PostgreSQL  IA    Servidor de    (6 tabelas)
+(dados)  (4 usos)   arquivos
 ```
 
 Fonte: elaborado pelos autores (2026).
 
-**Figura 2 — Fluxo de uso, do cadastro ao acompanhamento do progresso**
+**Figura 2 — Caminho do usuário no site**
 
 ```
 Cadastro/Login → PAINEL (trilha de 5 etapas)
@@ -92,13 +92,13 @@ Cadastro/Login → PAINEL (trilha de 5 etapas)
 CURRÍCULOS  SIMULAÇÕES  TREINO DE   GUIAS     DOCUMENTOS
   │            │        ENTREVISTA    │            │
   ├ formulário │            │         │            │
-  ├ análise ATS│            │         │            │
+  ├ nota ATS   │            │         │            │
   ├ IA         ▼            ▼         ▼            ▼
   └ PDF     resultado   devolutiva  leitura     arquivos
    │            │            │         │            │
    └────────────┴────────────┴─────────┴────────────┘
                     ▼
-        Progresso atualizado no painel
+            Painel atualizado
 ```
 
 Fonte: elaborado pelos autores (2026).

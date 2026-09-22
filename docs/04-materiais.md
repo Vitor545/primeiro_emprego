@@ -1,59 +1,50 @@
 # 4 MATERIAIS
 
-O desenvolvimento da plataforma "Primeiro Emprego" foi conduzido integralmente com recursos
-computacionais, uma vez que o produto consiste em um sistema web e não demanda matéria-prima física.
-Os recursos empregados dividem-se em três categorias: equipamentos, softwares e bibliotecas de
-desenvolvimento e mão de obra especializada. Optou-se, em todas as escolhas técnicas, por
-ferramentas gratuitas ou de código aberto, de modo a manter o custo de licenciamento nulo e a
-garantir que o protótipo possa ser reproduzido por qualquer integrante sem aquisição de software
-proprietário. A relação completa dos recursos e o respectivo custo orçado são apresentados no
-Quadro 1.
+Por se tratar de um site, o projeto não usou matéria-prima física: todos os recursos são
+computacionais. Eles se dividem em quatro grupos: equipamentos, programas e bibliotecas de
+programação, serviços de internet e mão de obra. Sempre que possível, a equipe escolheu ferramentas
+gratuitas ou de código aberto, para que o custo com licenças fosse zero e qualquer integrante
+pudesse reproduzir o projeto sem comprar nada. O Quadro 1 lista todos os recursos e seus custos.
 
-**Quadro 1 — Recursos necessários ao desenvolvimento do produto**
+**Quadro 1 — Recursos usados no desenvolvimento do produto**
 
-| Categoria | Recurso | Finalidade no projeto | Quantidade | Custo unitário | Custo total |
+| Categoria | Recurso | Para que serve no projeto | Quantidade | Custo unitário | Custo total |
 | --- | --- | --- | --- | --- | --- |
-| Equipamento | Notebook (processador Intel Core i5, 16 GB de memória) | Estação de desenvolvimento e testes | 3 | R$ 0,00 (já pertencente aos integrantes) | R$ 0,00 |
-| Software | Visual Studio Code | Edição de código | 3 licenças | R$ 0,00 | R$ 0,00 |
-| Software | Node.js 24 e npm | Execução do back-end e gestão de pacotes | 1 | R$ 0,00 | R$ 0,00 |
-| Software | TypeScript | Linguagem de programação do front e do back | 1 | R$ 0,00 | R$ 0,00 |
-| Software | Git e GitHub (plano gratuito) | Versionamento e repositório remoto | 1 | R$ 0,00 | R$ 0,00 |
-| Software | Navegador Chrome/Edge | Testes de interface e exportação em PDF | 3 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | React 19 e React Router | Construção da interface e navegação | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | Vite | Empacotamento e servidor de desenvolvimento | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | Tailwind CSS 4 e shadcn/Base UI | Estilização e componentes de interface | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | TanStack Query | Consumo da API e cache de dados | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | React Hook Form e Zod | Formulários e validação de dados | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | Express 5 | Servidor HTTP da API | 1 | R$ 0,00 | R$ 0,00 |
-| Infraestrutura | VPS (servidor virtual privado) | Hospedagem da aplicação, do PostgreSQL e do SeaweedFS | 1 | R$ 43,99/mês (já pertencente ao integrante) | R$ 0,00 |
-| Infraestrutura | Domínio na internet | Endereço público da plataforma | 1 | R$ 10,00 (já registrado) | R$ 0,00 |
-| Serviço | PostgreSQL 18 | Persistência de usuários, currículos, resultados, anexos e interações de IA | 1 | R$ 0,00 (executado no VPS) | R$ 0,00 |
-| Serviço | SeaweedFS com API S3 | Armazenamento dos documentos enviados pelo candidato | 1 | R$ 0,00 (executado no VPS) | R$ 0,00 |
-| Serviço | API da OpenAI (`gpt-4o-mini`) | Geração de resumo, análise de aderência à vaga, carta de apresentação e devolutiva de entrevista | por uso | ~R$ 0,002 por chamada | inferior a R$ 1,00 |
-| Biblioteca | node-postgres (`pg`) | Acesso ao banco de dados | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | SDK da OpenAI | Integração com o provedor de IA | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | AWS SDK v3 (S3) e Multer | Upload e download dos documentos | 1 | R$ 0,00 | R$ 0,00 |
-| Biblioteca | jsonwebtoken e scrypt | Autenticação e proteção de senhas | 1 | R$ 0,00 | R$ 0,00 |
-| Mão de obra | Desenvolvimento full stack | Análise, implementação e testes do sistema (3 h/dia por 7 dias, 3 integrantes) | 63 h | R$ 0,00 (trabalho dos próprios integrantes) | R$ 0,00 |
-| **Total** | | | | | **R$ 0,00** (mais o consumo da API de IA, inferior a R$ 1,00) |
+| Equipamento | Notebook (processador Intel Core i5, 16 GB de memória) | Escrever e testar o código | 3 | R$ 0,00 (já eram dos integrantes) | R$ 0,00 |
+| Programa | Visual Studio Code | Editor de código | 3 | R$ 0,00 | R$ 0,00 |
+| Programa | Node.js 24 e npm | Rodar o servidor e instalar as bibliotecas | 1 | R$ 0,00 | R$ 0,00 |
+| Programa | TypeScript | Linguagem usada no site e no servidor | 1 | R$ 0,00 | R$ 0,00 |
+| Programa | Git e GitHub (plano gratuito) | Guardar o código e o histórico de alterações | 1 | R$ 0,00 | R$ 0,00 |
+| Programa | Navegador Chrome ou Edge | Testar as telas e salvar o currículo em PDF | 3 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | React e React Router | Montar as telas e a navegação | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | Vite | Montar o pacote final do site | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | Tailwind CSS e shadcn | Estilo visual e componentes de tela | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | TanStack Query | Buscar os dados do servidor e guardá-los em memória | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | React Hook Form e Zod | Formulários e conferência dos dados digitados | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | Express | Receber os pedidos que chegam ao servidor | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | node-postgres | Conversar com o banco de dados | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | SDK da OpenAI | Conectar o sistema à inteligência artificial | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | AWS SDK e Multer | Enviar e baixar os arquivos do candidato | 1 | R$ 0,00 | R$ 0,00 |
+| Biblioteca | jsonwebtoken e scrypt | Login e proteção das senhas | 1 | R$ 0,00 | R$ 0,00 |
+| Serviço | Servidor na internet (VPS) | Hospedar o site, o banco de dados e os arquivos | 1 | R$ 43,99/mês (já era de um integrante) | R$ 0,00 |
+| Serviço | Domínio na internet | Endereço público do site | 1 | R$ 10,00 (já registrado) | R$ 0,00 |
+| Serviço | Banco de dados PostgreSQL | Guardar usuários, currículos e resultados | 1 | R$ 0,00 (roda no próprio servidor) | R$ 0,00 |
+| Serviço | SeaweedFS | Guardar os documentos enviados pelo candidato | 1 | R$ 0,00 (roda no próprio servidor) | R$ 0,00 |
+| Serviço | API da OpenAI (modelo `gpt-4o-mini`) | Escrever o resumo do currículo, comparar com a vaga, gerar carta e avaliar respostas de entrevista | por uso | cerca de R$ 0,002 por pedido | R$ 1,00 |
+| Mão de obra | Desenvolvimento do sistema | Planejar, programar e testar (3 h por dia, por 7 dias, com 3 integrantes) | 63 h | R$ 0,00 (trabalho dos próprios integrantes) | R$ 0,00 |
+| **Total** | | | | | **R$ 1,00** |
 
 Fonte: elaborado pelos autores (2026).
 
-Cabe destacar que não houve desembolso com hospedagem, domínio ou licenças durante a execução do
-projeto. Um dos integrantes já dispunha, antes do início do trabalho, de um servidor virtual privado
-e de um domínio registrado, utilizados em projetos pessoais anteriores; a plataforma foi hospedada
-nessa infraestrutura, na qual também são executados o banco de dados PostgreSQL e o servidor de
-arquivos SeaweedFS, de modo que não constituem serviços contratados à parte. Registra-se, para fins
-de orçamento, que a contratação desses recursos custaria hoje R$ 43,99 mensais pelo servidor virtual
-privado e R$ 10,00 pelo domínio.
+A equipe não pagou por hospedagem nem por domínio. Um dos integrantes já tinha um servidor na
+internet e um endereço registrado, usados em projetos anteriores, e foi neles que o site entrou no
+ar. O banco de dados e o servidor de arquivos rodam dentro desse mesmo servidor, ou seja, não são
+serviços contratados à parte. Se fosse preciso contratar hoje, o servidor custaria R$ 43,99 por mês e
+o domínio, R$ 10,00.
 
-O único item de custo variável é a interface de programação da OpenAI, cobrada por token processado.
-Foi adotado o modelo `gpt-4o-mini`, ao preço de US$ 0,15 por milhão de tokens de entrada e US$ 0,60
-por milhão de tokens de saída, o que corresponde a aproximadamente R$ 0,002 por requisição da
-plataforma — valor que mantém o consumo do protótipo abaixo de R$ 1,00. A mão de obra corresponde a
-63 horas, resultado de 3 horas diárias durante 7 dias para cada um dos três integrantes, executadas
-pelos próprios autores no âmbito acadêmico do trabalho e, portanto, sem remuneração. Os três
-notebooks utilizados como estação de desenvolvimento, com processador Intel Core i5 e 16 GB de
-memória, já pertenciam aos integrantes. Dessa forma, o custo orçado do produto é de R$ 0,00,
-acrescido apenas do consumo da interface de programação de inteligência artificial, inferior a
-R$ 1,00 no período.
+O único gasto do projeto foi com a inteligência artificial, cobrada pela quantidade de texto
+processado. Foi usado o modelo `gpt-4o-mini`, da OpenAI, que custa US$ 0,15 por milhão de tokens
+recebidos e US$ 0,60 por milhão de tokens gerados — cerca de R$ 0,002 por pedido feito pelo site, o
+que somou R$ 1,00 no período. Os três notebooks já eram dos integrantes, e as 63 horas de trabalho
+foram feitas pelos próprios autores, sem pagamento. Por isso, o custo total do produto ficou em
+R$ 1,00.

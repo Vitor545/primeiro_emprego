@@ -8,7 +8,7 @@ compatibilidade ATS, simulacoes comportamentais, guias de carreira e painel de p
 ```
 back-end/    API em Node + Express + TypeScript + PostgreSQL (IA e armazenamento S3)
 front-end/   SPA em React 19 + Vite + TypeScript + Tailwind + TanStack Query
-docs/        Documentacao academica (itens 4 a 7) e backlog de melhorias
+docs/        Documentacao academica do trabalho (itens 4 a 7)
 ```
 
 ## Como rodar

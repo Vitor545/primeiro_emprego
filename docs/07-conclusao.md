@@ -1,60 +1,47 @@
 # 7 CONCLUSÃO
 
-A execução do trabalho demonstra que o objetivo geral de desenvolver um protótipo funcional da
-plataforma "Primeiro Emprego" foi atingido. O sistema operou de forma estável durante a verificação,
-permitindo o cadastro e a autenticação de usuários, a construção e a exportação de currículos, a
-realização das simulações comportamentais, a leitura dos guias de carreira e o acompanhamento do
-progresso em um painel consolidado.
+O trabalho alcançou o objetivo geral de criar um site funcional do "Primeiro Emprego". Durante os
+testes, o sistema permitiu cadastrar e logar usuários, montar e exportar currículos, responder às
+simulações, ler os guias de carreira e acompanhar o progresso pelo painel.
 
-As quatro funcionalidades previstas nos objetivos do produto foram entregues. O gerador de currículos
-avalia sete critérios de triagem automática e devolve ao usuário o percentual de compatibilidade
-acompanhado da orientação de correção de cada item pendente; as três simulações comportamentais
-calculam a pontuação das respostas, classificam o nível de preparo e registram as tentativas; os
-guias apresentam o conteúdo em seções com marcação de leitura; e o painel converte essas ações em uma
-trilha de cinco etapas com percentual de conclusão. Ao longo do desenvolvimento, o escopo foi ampliado
-com quatro recursos apoiados por inteligência artificial — geração do resumo profissional, análise de
-aderência entre currículo e descrição de vaga, elaboração de carta de apresentação e devolutiva de
-resposta de entrevista segundo a técnica STAR — e com um repositório de documentos do candidato em
-armazenamento de objetos. O banco de dados, inicialmente local, foi migrado para um servidor
-PostgreSQL, o que permitiu o trabalho simultâneo dos integrantes sobre a mesma base.
+As quatro funcionalidades previstas foram entregues. O gerador de currículos confere sete pontos de
+triagem e devolve a nota de compatibilidade junto com a explicação do que corrigir; as três
+simulações somam a pontuação das respostas, indicam o nível de preparo e guardam cada tentativa; os
+guias trazem o conteúdo em seções e podem ser marcados como lidos; e o painel transforma essas ações
+em uma trilha de cinco etapas com a porcentagem concluída. Durante o desenvolvimento, o projeto ainda
+ganhou quatro recursos com inteligência artificial — escrever o resumo do currículo, comparar o
+currículo com uma vaga, gerar a carta de apresentação e avaliar respostas de entrevista pela técnica
+STAR — e uma área para o candidato guardar seus documentos. O banco de dados, que no início rodava na
+máquina de cada um, foi trocado por um PostgreSQL em servidor, o que permitiu que os três integrantes
+trabalhassem sobre os mesmos dados.
 
-Registram-se duas diferenças entre o previsto e o implementado. A primeira refere-se à exportação do
-currículo em PDF, realizada pelo mecanismo de impressão do próprio navegador, com folha de estilos
-específica, e não por biblioteca externa de geração de arquivos. A decisão decorreu de uma restrição
-técnica do próprio problema tratado: bibliotecas dessa natureza tendem a converter o texto em imagem,
-o que impediria a leitura do documento pelos sistemas de triagem automática, justamente a barreira que
-o produto busca reduzir. A segunda diferença é favorável ao previsto: além do protótipo local, a
-plataforma foi empacotada em contêineres e publicada em um cluster Kubernetes hospedado no servidor
-virtual privado da equipe, tornando-se acessível publicamente com certificado de segurança emitido de
-forma automática.
+Duas coisas saíram diferentes do previsto. A primeira é a exportação do currículo em PDF, feita pela
+impressão do próprio navegador e não por um programa externo. A escolha veio de uma limitação ligada
+ao próprio problema: esses programas costumam transformar o texto em imagem, e aí os sistemas de
+triagem das empresas não conseguem ler o currículo — exatamente a barreira que o site quer diminuir.
+A segunda diferença foi para melhor: além de rodar na máquina dos integrantes, o site foi publicado
+na internet, em um servidor com certificado de segurança gerado automaticamente.
 
-Entre as dificuldades técnicas enfrentadas, destacam-se a definição da ordem de inicialização do
-banco de dados, que exigiu deslocar a criação do esquema para o módulo de conexão; a manutenção da
-separação entre regra de negócio e renderização na interface, que demandou a extração de todo o
-estado e de todas as chamadas à interface de programação para hooks específicos de cada página; a
-obtenção de respostas estruturadas do modelo de linguagem, resolvida pela exigência de formato JSON e
-pela validação da resposta antes do uso; e, por fim, a recusa das credenciais dos dois serviços
-externos pelos respectivos provedores no ambiente de testes, situação que levou ao tratamento
-explícito dessas falhas, de modo que o sistema informe a causa e permaneça operante nos demais
-módulos.
+As principais dificuldades foram técnicas. O banco de dados precisava estar pronto antes de o
+servidor começar a usá-lo, o que exigiu mudar a ordem em que o sistema inicia. Manter as telas
+livres de regra de negócio deu trabalho: foi preciso tirar de dentro delas todo o estado e todas as
+chamadas ao servidor. A inteligência artificial respondia em texto livre, formato que não serve para
+alimentar uma tela, e a solução foi exigir a resposta em um formato fixo e conferi-la antes de usar.
+Também foi preciso acertar a configuração de acesso ao servidor de arquivos, para que o envio e o
+download dos documentos do candidato funcionassem pelo link temporário.
 
-Quanto ao custo, não houve dispêndio com licenças de software, hospedagem ou domínio, pois todas as
-ferramentas utilizadas são gratuitas ou de código aberto e o servidor virtual privado que hospeda a
-aplicação, o banco de dados e o armazenamento de arquivos já pertencia a um dos integrantes antes do
-início do trabalho, assim como o domínio empregado; a contratação desses recursos custaria, nos
-valores atuais, R$ 43,99 mensais e R$ 10,00, respectivamente. O único custo variável do produto é o
-consumo da interface de programação de inteligência artificial, cobrado por token processado e
-estimado em aproximadamente R$ 0,002 por requisição e inferior a R$ 1,00 no período, conforme
-demonstrado no Quadro 4. A mão de obra totalizou 63 horas, correspondentes a 3 horas diárias durante
-7 dias para cada um dos três integrantes, sem remuneração por se tratar de trabalho acadêmico dos
-próprios autores. O custo final do produto foi, portanto, de R$ 0,00.
+O projeto não teve gasto com licenças, hospedagem ou domínio. As ferramentas usadas são gratuitas ou
+de código aberto, e o servidor e o endereço na internet já eram de um dos integrantes — contratá-los
+hoje custaria R$ 43,99 por mês e R$ 10,00. O único gasto foi com a inteligência artificial, cobrada
+pelo texto processado, cerca de R$ 0,002 por pedido, somando R$ 1,00 no período, como mostra o Quadro
+4. As 63 horas de trabalho, 3 horas por dia durante 7 dias para cada integrante, não foram
+remuneradas, por se tratar de trabalho acadêmico dos próprios autores. O custo final do produto foi,
+portanto, de R$ 1,00.
 
-O produto apresenta, ainda, limitações a serem consideradas: o conteúdo das simulações e dos guias é
-definido no código-fonte, não havendo área administrativa para inclusão de novos materiais; os
-recursos apoiados por inteligência artificial e o repositório de documentos dependem de credenciais
-válidas, não disponíveis no ambiente de testes; não há limite de uso das chamadas de inteligência
-artificial por usuário; e o projeto não possui suíte de testes automatizados. Como contribuição para
-trabalhos futuros, sugere-se a implementação de controle de cota de uso, a criação de testes automatizados para as regras de análise de currículo e de pontuação
-das simulações, a importação de currículos em PDF já existentes com preenchimento automático do
-formulário, o registro histórico da evolução das notas, a geração de questões de simulação a partir da
-vaga informada pelo usuário e a simulação de entrevistas por áudio.
+Todas as funcionalidades estão em funcionamento no site publicado, incluindo os quatro recursos de
+inteligência artificial e a área de documentos do candidato. Para trabalhos futuros, sugere-se criar
+um limite de uso da inteligência artificial por usuário, escrever testes automatizados para as regras
+de nota do currículo e de pontuação das simulações, permitir importar um currículo em PDF já pronto
+para preencher o formulário sozinho, guardar o histórico das notas ao longo do tempo, gerar as
+questões da simulação a partir da vaga informada pelo usuário, simular entrevistas por áudio e criar
+uma área para cadastrar novos guias e simulações sem precisar programar.
