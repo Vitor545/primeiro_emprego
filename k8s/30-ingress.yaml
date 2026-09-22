@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: primeiro-emprego
+  namespace: primeiro-emprego
+  annotations:
+    cert-manager.io/cluster-issuer: cluster-issuer
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - emprego.vitorsouzadasilva.tech
+      secretName: primeiro-emprego-tls
+  rules:
+    - host: emprego.vitorsouzadasilva.tech
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80

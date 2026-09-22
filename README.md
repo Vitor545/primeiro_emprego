@@ -106,6 +106,22 @@ npm run dev    # http://localhost:5173
 - Validacao de entrada por schema Zod no middleware `validateRequest`.
 - Codigo compartilhado (erros, middlewares, utilitarios) em `src/shared`.
 
+## Deploy no Kubernetes
+
+Aplicacao publicada no cluster microk8s (`76.13.168.104`), namespace `primeiro-emprego`, no host
+`emprego.vitorsouzadasilva.tech` — `/` serve o front e `/api` vai para a API, o que dispensa CORS.
+Manifests em `k8s/`.
+
+Para publicar uma nova versao:
+
+```powershell
+.\scripts\deploy.ps1 -Version 1.1.0
+```
+
+O procedimento completo — primeiro deploy, rollback, troca de segredos, migracoes, mudanca de
+dominio, escala e solucao de problemas — esta em [DEPLOY.md](DEPLOY.md).
+
+
 ## Equipe
 
 - Gabriel Inacio da Silva

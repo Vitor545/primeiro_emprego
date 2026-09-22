@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variaveis de ambiente (use os .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Segredos do Kubernetes
+k8s/secret.yaml
