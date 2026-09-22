@@ -1,109 +1,4 @@
-# Item 6 — RESULTADOS
-
-## Parte 1 — Perguntas do roteiro e respostas
-
-**1. O que o roteiro pede neste item?**
-A apresentação do produto final por meio de descrições, dados e imagens; o relato do funcionamento em
-situação de serviço; um quadro comparando as funcionalidades idealizadas (item 2.2) com as
-efetivamente produzidas; dados numéricos quando couber; e a tabela de custo real, no mesmo formato do
-item 4. O texto deve ser objetivo, sem adjetivos de julgamento ("bom", "ruim").
-
-**2. Qual é o produto final entregue?**
-Uma aplicação web composta por dois programas: uma API em Node.js com banco de dados PostgreSQL e uma
-interface em React executada no navegador. A interface possui doze telas funcionais mais a tela de
-erro, e a API expõe vinte e seis endpoints de negócio, além de um endpoint de verificação de saúde.
-A plataforma integra ainda dois serviços externos: um provedor de inteligência artificial e um
-servidor de arquivos compatível com o protocolo S3.
-
-**3. Como o produto funciona em situação de serviço?**
-O usuário cria uma conta ou autentica-se; é direcionado ao painel, que apresenta a trilha de cinco
-etapas e quatro indicadores. Na tela de currículos, cria uma versão e preenche o formulário guiado,
-acompanhando a pré-visualização do documento e a lista de critérios de triagem atendidos e pendentes.
-No mesmo editor, o assistente de inteligência artificial gera o resumo profissional, compara o
-currículo com a descrição de uma vaga colada pelo usuário — devolvendo nota de aderência,
-palavras-chave presentes e ausentes e sugestões — e redige uma carta de apresentação. Ao salvar, o
-servidor recalcula o percentual de compatibilidade; ao acionar a exportação, o navegador imprime
-apenas o documento, em PDF com texto selecionável. Na tela de simulações, o usuário responde às
-questões situacionais e recebe pontuação, classificação e devolutiva. Na tela de treino de entrevista,
-escreve uma resposta aberta e recebe avaliação pela técnica STAR, com nota, pontos fortes, pontos a
-melhorar e a resposta reescrita. Na tela de documentos, envia certificados e outros arquivos, que são
-guardados no armazenamento de objetos e recuperados por endereço assinado. Nos guias, lê o conteúdo e
-o marca como lido. Cada uma dessas ações atualiza automaticamente o painel de progresso.
-
-**4. Quais dados numéricos podem ser apresentados?**
-Os valores abaixo foram medidos no código-fonte entregue e no processo de verificação:
-
-| Indicador | Valor medido |
-| --- | --- |
-| Arquivos de código-fonte (TypeScript/TSX) | 173 |
-| Linhas de código — back-end | 2.412 |
-| Linhas de código — front-end | 3.979 |
-| Linhas de código — total | 6.391 |
-| Módulos de domínio no back-end | 8 |
-| Endpoints de negócio expostos pela API | 26 |
-| Tabelas no banco de dados PostgreSQL | 6 |
-| Telas funcionais na interface (+ tela de erro 404) | 12 (+1) |
-| Hooks de página (regra de tela isolada da renderização) | 12 |
-| Critérios avaliados pela análise de compatibilidade ATS | 7 |
-| Recursos de inteligência artificial | 4 |
-| Simulações comportamentais disponíveis | 3 |
-| Questões situacionais implementadas | 15 |
-| Perguntas do treino de entrevista | 6 |
-| Guias de carreira publicados | 3 |
-| Erros na verificação de tipos (TypeScript) | 0 |
-| Erros na análise estática (ESLint) | 0 |
-| Tempo de geração do pacote de produção | 1,06 s |
-| Tamanho do pacote de produção (JavaScript) | 534,65 kB (162,42 kB comprimido) |
-| Tamanho do pacote de produção (CSS) | 45,07 kB (8,42 kB comprimido) |
-
-**5. Quais testes foram executados e qual foi o retorno?**
-Foram executadas as rotas da API com dados reais, contra o banco PostgreSQL. Registros obtidos: o
-banco de dados `primeiro-emprego` foi criado e as seis tabelas, geradas pelas migrações automáticas;
-a autenticação retornou token válido; a criação de currículo de exemplo resultou em 71% de
-compatibilidade ATS (cinco dos sete critérios atendidos); o envio das respostas da simulação
-"entrevista comportamental" retornou 10 de 10 pontos, equivalente a 100% e classificação "preparo
-avançado"; e a consulta ao painel retornou 20% de conclusão da trilha antes da realização das demais
-etapas. A verificação de tipos e a análise estática foram concluídas sem apontamentos nos dois
-projetos, e o pacote de produção foi gerado sem erros.
-
-**6. Os recursos de inteligência artificial e de armazenamento foram validados de ponta a ponta?**
-Não. As rotas foram implementadas e o comportamento de erro foi verificado, mas as credenciais dos
-dois serviços externos disponíveis no ambiente de testes foram recusadas pelos próprios provedores: a
-chave da interface de programação de inteligência artificial retornou o código 401
-(`invalid_api_key`) e o armazenamento de objetos retornou o código 403 (`SignatureDoesNotMatch`) em
-todas as operações, inclusive na listagem de buckets. Nessas condições, a API respondeu corretamente
-com o código 502 e mensagem orientando a verificação das credenciais, sem interromper os demais
-módulos. A validação funcional desses dois recursos depende da substituição das credenciais.
-
-**7. Todas as funcionalidades idealizadas foram entregues?**
-Sim, as quatro funcionalidades previstas no item 2.2 foram implementadas, e outras quatro foram
-acrescentadas durante o desenvolvimento (assistente de currículo por inteligência artificial, análise
-de aderência a vagas, treino de entrevista com devolutiva e repositório de documentos). A única
-diferença de implementação a registrar é a exportação em PDF, realizada pelo mecanismo de impressão
-do navegador e não por biblioteca externa.
-
-**8. A plataforma foi publicada?**
-Sim. O produto foi empacotado em contêineres e publicado em um cluster Kubernetes hospedado no
-servidor virtual privado da equipe, ficando acessível em `https://emprego.vitorsouzadasilva.tech`,
-com certificado TLS emitido automaticamente pela autoridade certificadora Let's Encrypt. A interface
-e a API respondem sob o mesmo endereço — a raiz serve a interface e o caminho `/api`, o servidor de
-aplicação —, e o banco de dados é acessado pela rede interna do cluster.
-
-**9. O que deve constar na tabela de custo real?**
-Os mesmos recursos do item 4, com os valores efetivamente incorridos. O custo real de infraestrutura
-foi zero: o VPS e o domínio já pertenciam a um integrante, e neles rodam também o PostgreSQL e o
-SeaweedFS. Se contratados hoje, custariam R$ 43,99 mensais e R$ 10,00, respectivamente. Restam como
-custo apenas as 63 horas de desenvolvimento (3 h/dia × 7 dias × 3 integrantes) e o consumo da API de
-inteligência artificial, inferior a R$ 1,00.
-
-**10. Quais imagens devem ser inseridas?**
-Capturas de tela do produto em funcionamento, listadas na Parte 3 deste documento.
-
----
-
-## Parte 2 — Texto final para o documento
-
-### 6 RESULTADOS
+# 6 RESULTADOS
 
 O produto final consiste em uma aplicação web composta por dois programas independentes: uma
 interface executada no navegador, construída em React com TypeScript, e um servidor de aplicação em
@@ -216,14 +111,13 @@ O custo real do produto é apresentado no Quadro 4, no mesmo formato adotado no 
 
 | Categoria | Recurso | Quantidade | Custo orçado | Custo real |
 | --- | --- | --- | --- | --- |
-| Equipamento | Notebooks dos integrantes | 3 | R$ `[confirmar]` | R$ `[confirmar]` |
-| Equipamento | Conexão de internet | 3 | R$ `[confirmar]` | R$ `[confirmar]` |
+| Equipamento | Notebooks dos integrantes (Intel Core i5, 16 GB) | 3 | R$ 0,00 | R$ 0,00 |
 | Software e bibliotecas | Node.js, TypeScript, Vite, React, Tailwind CSS, TanStack Query, React Hook Form, Zod, Express, node-postgres, AWS SDK, Git, Visual Studio Code | — | R$ 0,00 | R$ 0,00 |
 | Infraestrutura | VPS que hospeda a aplicação, o PostgreSQL e o SeaweedFS | 1 | R$ 43,99/mês | R$ 0,00 (já pertencia a um integrante) |
 | Infraestrutura | Domínio na internet | 1 | R$ 10,00 | R$ 0,00 (já registrado) |
 | Serviços | API de inteligência artificial `gpt-4o-mini` (por token) | ~R$ 0,002 por chamada | inferior a R$ 1,00 | R$ `[confirmar no painel]` |
-| Mão de obra | Desenvolvimento full stack (3 h/dia × 7 dias × 3 integrantes) | 63 h | R$ `[confirmar]`/h | R$ `[confirmar]` |
-| **Total** | | | **R$ `[confirmar]`** | **R$ `[confirmar]`** |
+| Mão de obra | Desenvolvimento full stack (3 h/dia × 7 dias × 3 integrantes) | 63 h | R$ 0,00 | R$ 0,00 |
+| **Total** | | | **R$ 0,00** | **R$ 0,00** (mais o consumo de IA, inferior a R$ 1,00) |
 
 Fonte: elaborado pelos autores (2026).
 
@@ -233,38 +127,7 @@ a um dos integrantes antes do início do projeto, sendo o banco de dados Postgre
 arquivos SeaweedFS executados nesse mesmo servidor. Caso fosse necessário contratá-los, o custo seria
 de R$ 43,99 mensais pelo servidor e R$ 10,00 pelo domínio. O único item de custo variável é o consumo
 da interface de programação de inteligência artificial, cobrado por token processado, estimado em
-aproximadamente R$ 0,002 por requisição e inferior a R$ 1,00 no período. A mão de obra corresponde a
-63 horas, resultantes de 3 horas diárias durante 7 dias para cada um dos três integrantes. A
-diferença entre o custo orçado e o custo real restringe-se, portanto, à infraestrutura que não
-precisou ser contratada.
-
----
-
-## Parte 3 — Imagens a capturar e inserir no item 6
-
-Rode a aplicação (`npm run dev` nas duas pastas), entre com `demo@primeiroemprego.dev` / `demo1234`
-e capture as telas abaixo (`Win + Shift + S`):
-
-| Figura | Tela | O que precisa aparecer |
-| --- | --- | --- |
-| Figura 3 | Página inicial | Título, descrição e os quatro cartões de funcionalidades |
-| Figura 4 | Cadastro ou login | Formulário preenchido (sem expor senha real) |
-| Figura 5 | Painel de progresso | Os quatro indicadores e a trilha de cinco etapas |
-| Figura 6 | Lista de currículos | Cartão do currículo com o selo de percentual ATS |
-| Figura 7 | Editor de currículo | Formulário à esquerda, checklist ATS e pré-visualização à direita |
-| Figura 8 | Assistente de IA no editor | Campo da vaga, nota de aderência e palavras-chave ausentes |
-| Figura 9 | Exportação em PDF | Janela de impressão do navegador exibindo apenas o currículo |
-| Figura 10 | Lista de simulações | Os três testes com duração e número de questões |
-| Figura 11 | Resultado da simulação | Pontuação, percentual, classificação e devolutiva |
-| Figura 12 | Treino de entrevista | Pergunta escolhida, resposta escrita e devolutiva STAR |
-| Figura 13 | Documentos | Lista de arquivos enviados com data e tamanho |
-| Figura 14 | Guia aberto | Seções do guia e botão de marcar como lido |
-
-Legenda padrão: *Figura X — [descrição da tela]. Fonte: elaborado pelos autores (2026).*
-
-## Pendências da equipe neste item
-
-- [ ] Substituir as credenciais da IA e do armazenamento e repetir os testes das Figuras 8, 12 e 13.
-- [ ] Capturar e inserir as Figuras 3 a 14.
-- [ ] Preencher o valor-hora e o valor dos equipamentos no Quadro 4 (horas já fechadas em 63 h).
-- [ ] Conferir se os valores do Quadro 4 são coerentes com os do item 4.
+aproximadamente R$ 0,002 por requisição e inferior a R$ 1,00 no período. A mão de obra corresponde a 63 horas, resultantes de 3 horas
+diárias durante 7 dias para cada um dos três integrantes, realizadas pelos próprios autores no âmbito
+acadêmico do trabalho e, portanto, sem remuneração. O custo real do produto é, dessa forma, de
+R$ 0,00, não havendo diferença em relação ao orçado.
