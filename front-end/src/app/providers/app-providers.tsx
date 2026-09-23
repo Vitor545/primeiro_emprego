@@ -11,12 +11,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             {children}
             <Toaster richColors position="top-right" />
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>
   )
